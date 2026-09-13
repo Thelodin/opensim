@@ -200,13 +200,13 @@ namespace Prebuild.Core.Targets
 
         private void transformToFile(string filename, XsltArgumentList argList, string nodeName)
         {
-            // Create an XslTransform for this file
-            XslTransform templateTransformer = new XslTransform();
+            // Create an XslCompiledTransform for this file
+            XslCompiledTransform templateTransformer = new XslCompiledTransform();
 
             // Load up the template
             XmlNode templateNode = autotoolsDoc.SelectSingleNode(nodeName + "/*");
             //templateTransformer.Load(templateNode.CreateNavigator(), xr, e);
-            templateTransformer.Load(templateNode.CreateNavigator(), xr);
+            templateTransformer.Load(templateNode.CreateNavigator(), XsltSettings.Default, xr);
             // Create a writer for the transformed template
             XmlTextWriter templateWriter = new XmlTextWriter(filename, null);
 
