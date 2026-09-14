@@ -209,9 +209,11 @@ namespace Prebuild.Core.Targets
             templateTransformer.Load(templateNode.CreateNavigator(), XsltSettings.Default, xr);
             // Create a writer for the transformed template
             XmlTextWriter templateWriter = new XmlTextWriter(filename, null);
-
-            // Perform transformation, writing the file
-            templateTransformer.Transform(m_Kernel.CurrentDoc, argList, templateWriter, xr);
+            using (templateWriter)
+            {
+                // Perform transformation, writing the file
+                templateTransformer.Transform(m_Kernel.CurrentDoc, argList, templateWriter, xr);
+            }
         }
 
         static string NormalizeAsmName(string name)

@@ -237,7 +237,7 @@ namespace Prebuild.Core.Nodes
                                 {
                                     Regex exRegEx = new Regex(exclude.Pattern);
                                     match = exRegEx.Match(file);
-                                    excludeFile |= !match.Success;
+                                    excludeFile |= match.Success;
                                 }
 
                                 if (!excludeFile)
