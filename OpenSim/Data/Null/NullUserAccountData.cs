@@ -139,13 +139,19 @@ namespace OpenSim.Data.Null
             List<string> lst = new List<string>(m_DataByName.Keys);
             if (words.Length == 1)
             {
-                lst = lst.FindAll(delegate(string s) { return s.StartsWith(words[0]); });
+                lst = lst.FindAll(delegate(string s) {
+                    UserAccountData account = m_DataByName[s];
+                    return (account.ScopeID == scopeID || account.ScopeID == UUID.Zero)
+                        && s.StartsWith(words[0], StringComparison.OrdinalIgnoreCase);
+                });
             }
             else
             {
                 lst = lst.FindAll(delegate(string s) {
+                    UserAccountData account = m_DataByName[s];
                     int separator = s.IndexOf(' ');
-                    return separator > 0
+                    return (account.ScopeID == scopeID || account.ScopeID == UUID.Zero)
+                        && separator > 0
                         && s.StartsWith(words[0], StringComparison.OrdinalIgnoreCase)
                         && s.Substring(separator + 1).StartsWith(words[1], StringComparison.OrdinalIgnoreCase);
                 });
