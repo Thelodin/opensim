@@ -69,7 +69,7 @@ namespace OpenSim.Data.SQLite
                 }
                 else
                 {
-                    cmd.CommandText = String.Format("select * from {0} where (ScopeID=:ScopeID or ScopeID=:UUIDZero) and (FirstName like :SearchFirst or LastName like :SearchLast)", m_Realm);
+                    cmd.CommandText = String.Format("select * from {0} where (ScopeID=:ScopeID or ScopeID=:UUIDZero) and FirstName like :SearchFirst and LastName like :SearchLast", m_Realm);
                     cmd.Parameters.AddWithValue(":SearchFirst", words[0] + "%");
                     cmd.Parameters.AddWithValue(":SearchLast", words[1] + "%");
                 }

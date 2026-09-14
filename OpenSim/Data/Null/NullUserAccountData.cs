@@ -143,7 +143,12 @@ namespace OpenSim.Data.Null
             }
             else
             {
-                lst = lst.FindAll(delegate(string s) { return s.Contains(words[0]) || s.Contains(words[1]); });
+                lst = lst.FindAll(delegate(string s) {
+                    int separator = s.IndexOf(' ');
+                    return separator > 0
+                        && s.StartsWith(words[0], StringComparison.OrdinalIgnoreCase)
+                        && s.Substring(separator + 1).StartsWith(words[1], StringComparison.OrdinalIgnoreCase);
+                });
             }
 
             if (lst == null || (lst != null && lst.Count == 0))

@@ -306,7 +306,7 @@ namespace OpenSim.Data.PGSQL
                 }
                 else
                 {
-                    sql = String.Format(@"select * from {0} where (""ScopeID""=:ScopeID or ""ScopeID""=:UUIDZero) and (LOWER(""FirstName"" COLLATE ""en_US.utf8"") like LOWER(:searchFirst) or LOWER(""LastName"" COLLATE ""en_US.utf8"") like LOWER(:searchLast))", m_Realm);
+                    sql = String.Format(@"select * from {0} where (""ScopeID""=:ScopeID or ""ScopeID""=:UUIDZero) and LOWER(""FirstName"" COLLATE ""en_US.utf8"") like LOWER(:searchFirst) and LOWER(""LastName"" COLLATE ""en_US.utf8"") like LOWER(:searchLast)", m_Realm);
                     cmd.Parameters.Add(m_database.CreateParameter("searchFirst", "%" + words[0] + "%"));
                     cmd.Parameters.Add(m_database.CreateParameter("searchLast", "%" + words[1] + "%"));
                     cmd.Parameters.Add (m_database.CreateParameter("UUIDZero", UUID.Zero));
