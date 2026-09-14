@@ -98,13 +98,24 @@ namespace OpenSim.Data.Null
             if (data == null)
                 return false;
 
+            if (m_DataByUUID.TryGetValue(data.PrincipalID, out UserAccountData previous))
+            {
+                m_DataByName.Remove(previous.FirstName + " " + previous.LastName);
+                if (previous.Data != null
+                    && previous.Data.TryGetValue("Email", out string previousEmail)
+                    && !string.IsNullOrEmpty(previousEmail))
+                    m_DataByEmail.Remove(previousEmail);
+            }
+
             m_log.DebugFormat(
                 "[NULL USER ACCOUNT DATA]: Storing user account {0} {1} {2} {3}",
                 data.FirstName, data.LastName, data.PrincipalID, this.GetHashCode());
 
             m_DataByUUID[data.PrincipalID] = data;
             m_DataByName[data.FirstName + " " + data.LastName] = data;
-            if (data.Data.TryGetValue("Email", out string semail) && !string.IsNullOrEmpty(semail))
+            if (data.Data != null
+                && data.Data.TryGetValue("Email", out string semail)
+                && !string.IsNullOrEmpty(semail))
                 m_DataByEmail[semail] = data;
 
             // m_log.DebugFormat("m_DataByUUID count is {0}, m_DataByName count is {1}", m_DataByUUID.Count, m_DataByName.Count);
