@@ -64,12 +64,12 @@ namespace OpenSim.Data.SQLite
             {
                 if (words.Length == 1)
                 {
-                    cmd.CommandText = String.Format("select * from {0} where (ScopeID=:ScopeID or ScopeID=:UUIDZero) and (FirstName like :Search or LastName like :Search)", m_Realm);
+                    cmd.CommandText = String.Format("select * from {0} where (ScopeID=:ScopeID or ScopeID=:UUIDZero) and (FirstName like :Search or LastName like :Search) and active=1", m_Realm);
                     cmd.Parameters.AddWithValue(":Search", words[0] + "%");
                 }
                 else
                 {
-                    cmd.CommandText = String.Format("select * from {0} where (ScopeID=:ScopeID or ScopeID=:UUIDZero) and FirstName like :SearchFirst and LastName like :SearchLast", m_Realm);
+                    cmd.CommandText = String.Format("select * from {0} where (ScopeID=:ScopeID or ScopeID=:UUIDZero) and FirstName like :SearchFirst and LastName like :SearchLast and active=1", m_Realm);
                     cmd.Parameters.AddWithValue(":SearchFirst", words[0] + "%");
                     cmd.Parameters.AddWithValue(":SearchLast", words[1] + "%");
                 }
