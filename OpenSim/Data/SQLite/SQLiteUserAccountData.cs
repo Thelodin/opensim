@@ -53,6 +53,7 @@ namespace OpenSim.Data.SQLite
                     if (i != words.Length - 1)
                         Array.Copy(words, i + 1, words, i, words.Length - i - 1);
                     Array.Resize(ref words, words.Length - 1);
+                    i--;
                 }
             }
 
