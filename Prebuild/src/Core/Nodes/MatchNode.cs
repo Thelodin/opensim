@@ -237,7 +237,7 @@ namespace Prebuild.Core.Nodes
                                 {
                                     Regex exRegEx = new Regex(exclude.Pattern);
                                     match = exRegEx.Match(file);
-                                    excludeFile |= !match.Success;
+                                    excludeFile |= match.Success;
                                 }
 
                                 if (!excludeFile)
@@ -304,10 +304,9 @@ namespace Prebuild.Core.Nodes
             if (buildAction != string.Empty)
                 m_BuildAction = (BuildAction)Enum.Parse(typeof(BuildAction), buildAction);
 
-            //TODO: Figure out where the subtype node is being assigned
-            //string subType = Helper.AttributeValue(node, "subType", string.Empty);
-            //if (subType != String.Empty)
-            //    m_SubType = (SubType)Enum.Parse(typeof(SubType), subType);
+            string subType = Helper.AttributeValue(node, "subType", string.Empty);
+            if (subType != String.Empty)
+                m_SubType = (SubType)Enum.Parse(typeof(SubType), subType);
             m_ResourceName = Helper.AttributeValue(node, "resourceName", m_ResourceName);
             m_CopyToOutput = (CopyToOutput)Enum.Parse(typeof(CopyToOutput), Helper.AttributeValue(node, "copyToOutput", m_CopyToOutput.ToString()));
             m_Link = bool.Parse(Helper.AttributeValue(node, "link", bool.FalseString));

@@ -948,7 +948,16 @@ namespace OpenSim.Region.CoreModules.World.Objects.Commands
 
         private bool TryParseVectorRange(IEnumerable<string> rawComponents, out Vector3 startVector, out Vector3 endVector)
         {
-            string rawConsoleStartVector = rawComponents.Take(1).Single();
+            List<string> components = rawComponents.ToList();
+            if (components.Count != 3 || !string.Equals(components[1], "to", StringComparison.OrdinalIgnoreCase))
+            {
+                m_console.Output("Error: Expected '<start-coord> to <end-coord>'");
+                startVector = Vector3.Zero;
+                endVector = Vector3.Zero;
+                return false;
+            }
+
+            string rawConsoleStartVector = components[0];
 
             if (!ConsoleUtil.TryParseConsoleMinVector(rawConsoleStartVector, out startVector))
             {
@@ -958,7 +967,7 @@ namespace OpenSim.Region.CoreModules.World.Objects.Commands
                 return false;
             }
 
-            string rawConsoleEndVector = rawComponents.Skip(1).Take(1).Single();
+            string rawConsoleEndVector = components[2];
 
             if (!ConsoleUtil.TryParseConsoleMaxVector(rawConsoleEndVector, out endVector))
             {

@@ -283,6 +283,7 @@ namespace OpenSim.Data.PGSQL
                     if (i != words.Length - 1)
                         Array.Copy(words, i + 1, words, i, words.Length - i - 1);
                     Array.Resize(ref words, words.Length - 1);
+                    i--;
                 }
             }
 
@@ -298,14 +299,14 @@ namespace OpenSim.Data.PGSQL
             {
                 if (words.Length == 1)
                 {
-                    sql = String.Format(@"select * from {0} where (""ScopeID""=:ScopeID or ""ScopeID""=:UUIDZero) and (LOWER(""FirstName"" COLLATE ""en_US.utf8"") like LOWER(:search) or LOWER(""LastName"" COLLATE ""en_US.utf8"") like LOWER(:search))", m_Realm);
+                    sql = String.Format(@"select * from {0} where (""ScopeID""=:ScopeID or ""ScopeID""=:UUIDZero) and (LOWER(""FirstName"" COLLATE ""en_US.utf8"") like LOWER(:search) or LOWER(""LastName"" COLLATE ""en_US.utf8"") like LOWER(:search)) and ""active""=1", m_Realm);
                     cmd.Parameters.Add(m_database.CreateParameter("ScopeID", scopeID));
                     cmd.Parameters.Add (m_database.CreateParameter("UUIDZero", UUID.Zero));
                     cmd.Parameters.Add(m_database.CreateParameter("search", "%" + words[0] + "%"));
                 }
                 else
                 {
-                    sql = String.Format(@"select * from {0} where (""ScopeID""=:ScopeID or ""ScopeID""=:UUIDZero) and (LOWER(""FirstName"" COLLATE ""en_US.utf8"") like LOWER(:searchFirst) or LOWER(""LastName"" COLLATE ""en_US.utf8"") like LOWER(:searchLast))", m_Realm);
+                    sql = String.Format(@"select * from {0} where (""ScopeID""=:ScopeID or ""ScopeID""=:UUIDZero) and LOWER(""FirstName"" COLLATE ""en_US.utf8"") like LOWER(:searchFirst) and LOWER(""LastName"" COLLATE ""en_US.utf8"") like LOWER(:searchLast) and ""active""=1", m_Realm);
                     cmd.Parameters.Add(m_database.CreateParameter("searchFirst", "%" + words[0] + "%"));
                     cmd.Parameters.Add(m_database.CreateParameter("searchLast", "%" + words[1] + "%"));
                     cmd.Parameters.Add (m_database.CreateParameter("UUIDZero", UUID.Zero));
